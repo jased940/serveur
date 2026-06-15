@@ -9,7 +9,7 @@ app.use(express.json());
 // Configuration exacte de ton CPM Adsterra (0.079 $)
 let cpmTotalReel = 0.079; 
 
-// SÉCURITÉ : Tes 9 bannières réelles issues de ton bloc-notes
+// SÉCURITÉ : Tes 9 bannières réelles
 const listePubsClassiques = [
     `<div class="cadre-pub"><script async="async" data-cfasync="false" src="https://pl29755887.effectivecpmnetwork.com/0c4aec7de1dbfd24dc489c49dbbeed58/invoke.js"></script><div id="container-0c4aec7de1dbfd24dc489c49dbbeed58"></div></div>`,
     `<div class="cadre-pub"><script src="https://pl29755888.effectivecpmnetwork.com/dc/fc/00/dcfc006b10c9d5326ca60c79c48734c5.js"></script></div>`,
@@ -67,6 +67,7 @@ app.get('/', (req, res) => {
         </div>
 
         <script>
+            // On vérifie d'abord si l'utilisateur s'était déjà connecté avant le rafraîchissement
             let currentUserId = localStorage.getItem('userId') || "Jasedi_User";
             let userPrenom = localStorage.getItem('userPrenom') || "Invité";
 
@@ -94,6 +95,7 @@ app.get('/', (req, res) => {
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
                 const profil = JSON.parse(jsonPayload);
                 
+                // On bascule sur le compte Google de manière définitive
                 currentUserId = profil.email;
                 userPrenom = profil.given_name;
                 
@@ -101,6 +103,7 @@ app.get('/', (req, res) => {
                 localStorage.setItem('userPrenom', userPrenom);
                 
                 majInterface();
+                // On calcule le gain UNIQUEMENT après validation du compte
                 calculerGainImpression();
             }
 
@@ -130,14 +133,24 @@ app.get('/', (req, res) => {
             }
 
             window.onload = function () {
+                // On met à jour l'interface avec ce qu'on a en mémoire au démarrage
+                majInterface();
+
                 google.accounts.id.initialize({
                     client_id: "487882794507-di9ivm4deeps5hlpe6k4q1vsmg2e3cm7.apps.googleusercontent.com", 
-                    callback: handleCredentialResponse
+                    callback: handleCredentialResponse,
+                    auto_select: true // Demande à Google de reconnecter automatiquement la session sans recliquer !
                 });
+                
                 google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "medium" });
                 
-                majInterface();
-                calculerGainImpression();
+                // Si l'utilisateur est un invité ou déjà validé localement, on effectue le calcul
+                if (currentUserId === "Jasedi_User") {
+                    calculerGainImpression();
+                } else {
+                    // Si on est déjà connecté à Google localement, on applique le gain directement sur son ID
+                    calculerGainImpression();
+                }
             };
         </script>
     </body>
