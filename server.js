@@ -24,8 +24,11 @@ const listePubsClassiques = [
 
 // PAGE DE DIFFUSION PRINCIPALE
 app.get('/', (req, res) => {
+    // ICI : On assemble correctement toutes les pubs de la liste
     let htmlPubs = "";
-    listePubsClassiques.forEach(codeHtml => htmlPubs += codeHtml);
+    listePubsClassiques.forEach(codeHtml => {
+        htmlPubs += codeHtml;
+    });
 
     res.send(`
     <!DOCTYPE html>
@@ -62,30 +65,24 @@ app.get('/', (req, res) => {
         </div>
 
         <script>
-            // CONFIGURATION FINANCIÈRE DIRECTE
             const cpm = ${cpmTotalReel};
-            const nbrPubsDeLaPage = 9; // Nombre de bannières chargées à chaque fois
+            const nbrPubsDeLaPage = 9; 
             
-            // Calcul mathématique brut d'un rafraîchissement complet de la page
             const valeurBruteUnePub = cpm / 1000;
             const gainTotalPageBrut = valeurBruteUnePub * nbrPubsDeLaPage;
             
             const partUserPourCeChargement = gainTotalPageBrut * 0.70;
             const partAdminPourCeChargement = gainTotalPageBrut * 0.30;
 
-            // RÉCUPÉRATION DES COOKIES LOCAUX (Ce qui évite le reset à zéro)
             let soldeUserSauf = parseFloat(localStorage.getItem('cookie_solde_user')) || 0.00000;
             let soldeAdminSauf = parseFloat(localStorage.getItem('cookie_solde_admin')) || 0.00000;
 
-            // ON AJOUTE L'ARGENT DIRECTEMENT AU CHARGEMENT DE LA PAGE
             soldeUserSauf += partUserPourCeChargement;
             soldeAdminSauf += partAdminPourCeChargement;
 
-            // ON ENREGISTRE TOUT DE SUITE DANS LA MÉMOIRE DU NAVIGATEUR
             localStorage.setItem('cookie_solde_user', soldeUserSauf);
             localStorage.setItem('cookie_solde_admin', soldeAdminSauf);
 
-            // AFFICHAGE À L'ÉCRAN
             document.getElementById('solde-affichage').innerText = soldeUserSauf.toFixed(5);
             document.getElementById('admin-affichage').innerText = soldeAdminSauf.toFixed(5);
         </script>
