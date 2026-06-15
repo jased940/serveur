@@ -6,10 +6,10 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 
-// SÉCURITÉ MAXIMUM : On garde ton taux CPM bloqué à 0.05 $
-let cpmTotalReel = 0.05; 
+// CPM GLOBAL CORRIGÉ : 0.05$ en moyenne par pub x 10 pubs = 0.50$ au total pour 1000 pages vues.
+let cpmTotalReel = 0.50; 
 
-// SÉCURITÉ : Ta liste complète contenant maintenant tes 10 codes publicitaires
+// Tes 10 codes publicitaires réels
 const listePubsClassiques = [
     `<div class="cadre-pub"><iframe src="https://www.effectivecpmnetwork.com/weu4zeugu4?key=7d92fb6ddfab5d9efced716224171730" width="320" height="50" frameborder="0" scrolling="no"></iframe></div>`,
     `<div class="cadre-pub"><script async="async" data-cfasync="false" src="https://pl29755887.effectivecpmnetwork.com/0c4aec7de1dbfd24dc489c49dbbeed58/invoke.js"></script><div id="container-0c4aec7de1dbfd24dc489c49dbbeed58"></div></div>`,
@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
     <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Slice Master - 10 Publicités</title>
+        <title>Slice Master - Gains Réels Réglés</title>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
         <style>
             body { font-family: sans-serif; background: #f4f6f9; padding: 20px; text-align: center; margin: 0; }
@@ -60,8 +60,8 @@ app.get('/', (req, res) => {
             </div>
         </div>
 
-        <h2>Slice Master — Session active (10 Pubs)</h2>
-        <p style="color: #7f8c8d;">Tes 10 bannières se chargent ci-dessous. Rafraîchis pour accumuler tes gains.</p>
+        <h2>Slice Master — Mode 10 Pubs Sync</h2>
+        <p style="color: #7f8c8d;">Calculs indexés sur ton vrai taux Adsterra global (0.50$ CPM combiné).</p>
 
         <div class="zone-affichage-flex">
             ${htmlPubs}
@@ -114,15 +114,15 @@ app.get('/', (req, res) => {
             }
 
             function calculerGainImpression() {
-                const cpm = ${cpmTotalReel};
-                // Multiplié par 10 car le Direct Link est maintenant compté comme une impression active !
-                const totalPageBrut = (cpm / 1000) * 10; 
+                const cpmGlobal = ${cpmTotalReel};
+                // Gain brut généré par le chargement de la page complète (10 impressions)
+                const gainPageBrut = cpmGlobal / 1000; 
                 
                 let sUser = parseFloat(localStorage.getItem('solde_' + currentUserId)) || 0.00000;
                 let sAdmin = parseFloat(localStorage.getItem('solde_admin_' + currentUserId)) || 0.00000;
 
-                sUser += (totalPageBrut * 0.70);
-                sAdmin += (totalPageBrut * 0.30);
+                sUser += (gainPageBrut * 0.70);
+                sAdmin += (gainPageBrut * 0.30);
 
                 localStorage.setItem('solde_' + currentUserId, sUser);
                 localStorage.setItem('solde_admin_' + currentUserId, sAdmin);
@@ -151,5 +151,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Serveur prêt avec 10 bannières.`);
+    console.log(`Serveur recalibré à 0.50$ CPM global.`);
 });
