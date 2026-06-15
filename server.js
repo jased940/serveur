@@ -14,23 +14,34 @@ const utilisateurs = {
 let cpmActuelNormale = 1.50; 
 let cpmActuelAdulte = 4.50;  
 
-// ON DEPLACE LES CODES ICI : La liste de tes pubs bizarres/adultes (+18)
+// TOUT TON PACK DE CODES REGROUPÉ : Tes 8 blocs sont ici au chaud !
 const listePubsAdultes = [
+    // 1. Ton premier script d'origine
+    `<div class="cadre-pub"><script src="https://pl29755879.effectivecpmnetwork.com/8f/d5/45/8fd5451c080fad19be8c00d3a1c497d9.js"></script></div>`,
+    
+    // 2. Ton Direct Link (Smartlink) ouvert proprement
     `<div class="cadre-pub cadre-premium"><iframe src="https://www.effectivecpmnetwork.com/weu4zeugu4?key=7d92fb6ddfab5d9efced716224171730" allow="autoplay"></iframe></div>`,
+    
+    // 3. La bannière avec container div (ed58)
     `<div class="cadre-pub"><script async="async" data-cfasync="false" src="https://pl29755887.effectivecpmnetwork.com/0c4aec7de1dbfd24dc489c49dbbeed58/invoke.js"></script><div id="container-0c4aec7de1dbfd24dc489c49dbbeed58"></div></div>`,
+    
+    // 4. La bannière simple (34c5)
     `<div class="cadre-pub"><script src="https://pl29755888.effectivecpmnetwork.com/dc/fc/00/dcfc006b10c9d5326ca60c79c48734c5.js"></script></div>`,
-    `<div class="cadre-pub">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '3c4b9d3350a0a36321339e43f2b58753',
-                'format' : 'iframe',
-                'height' : 60,
-                'width' : 468,
-                'params' : {}
-            };
-        </script>
-        <script src="https://www.highperformanceformat.com/3c4b9d3350a0a36321339e43f2b58753/invoke.js"></script>
-     </div>`
+    
+    // 5. Format 468x60
+    `<div class="cadre-pub"><script type="text/javascript">atOptions = { 'key' : '3c4b9d3350a0a36321339e43f2b58753', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };</script><script src="https://www.highperformanceformat.com/3c4b9d3350a0a36321339e43f2b58753/invoke.js"></script></div>`,
+    
+    // 6. Format Mobile (320x50)
+    `<div class="cadre-pub"><script type="text/javascript">atOptions = { 'key' : '413409990af4d94ae0983ac152a17618', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script><script src="https://www.highperformanceformat.com/413409990af4d94ae0983ac152a17618/invoke.js"></script></div>`,
+    
+    // 7. Format Rectangle (300x250)
+    `<div class="cadre-pub"><script type="text/javascript">atOptions = { 'key' : 'b05b1a1e20bfa3cf90a8b1d5f64e558c', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/b05b1a1e20bfa3cf90a8b1d5f64e558c/invoke.js"></script></div>`,
+    
+    // 8. Format Gratte-ciel vertical (160x600)
+    `<div class="cadre-pub"><script type="text/javascript">atOptions = { 'key' : '2674947c70efac48b9eeb0f5df20d589', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };</script><script src="https://www.highperformanceformat.com/2674947c70efac48b9eeb0f5df20d589/invoke.js"></script></div>`,
+    
+    // 9. Format Grande Bannière (728x90)
+    `<div class="cadre-pub"><script type="text/javascript">atOptions = { 'key' : 'a78e8a7f558059741b744692e636f93b', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/a78e8a7f558059741b744692e636f93b/invoke.js"></script></div>`
 ];
 
 // Fonction qui génère le code HTML commun pour les pages de pubs
@@ -49,8 +60,9 @@ function genererPagePub(titre, typeFlux, couleurBordure, contenuZonePub) {
             .user-section { display: flex; gap: 15px; align-items: center; }
             .btn-logout { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; display: none; }
             
-            .zone-affichage-flex { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: center; margin: 35px auto; max-width: 1000px; }
-            .cadre-pub { background: white; border: 3px dashed ${couleurBordure}; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-flex; align-items: center; justify-content: center; padding: 10px; min-width: 300px; }
+            /* Alignement automatique de toutes tes bannières */
+            .zone-affichage-flex { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; align-items: center; margin: 35px auto; max-width: 1200px; }
+            .cadre-pub { background: white; border: 3px dashed ${couleurBordure}; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-flex; align-items: center; justify-content: center; padding: 10px; min-width: 180px; min-height: 70px; }
             
             .cadre-premium { width: 336px; height: 280px; padding: 0; }
             
@@ -168,12 +180,12 @@ app.get('/', (req, res) => {
     `);
 });
 
-// 2. PAGE FLUX CLASSIQUE (Vide pour le moment)
+// 2. PAGE FLUX CLASSIQUE (En attente de tes codes normaux)
 app.get('/pubs-classiques', (req, res) => {
     res.send(genererPagePub("Flux Classique Standard", "normale", "#3498db", "<p style='padding:20px; color:#7f8c8d;'>Zone Pub Classique (En attente de tes codes normaux)</p>"));
 });
 
-// 3. PAGE FLUX ADULTE (Contient maintenant TOUS tes blocs bizarres à haut CPM !)
+// 3. PAGE FLUX ADULTE (Affiche tout ton pack automatiquement !)
 app.get('/pubs-adultes', (req, res) => {
     let htmlPubs = "";
     listePubsAdultes.forEach(codeHtml => {
@@ -208,5 +220,5 @@ app.get('/api/solde/:userId', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Serveur corrigé lancé sur le port ${PORT}`);
+    console.log(`Serveur complet mis à jour.`);
 });
