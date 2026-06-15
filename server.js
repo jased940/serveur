@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // Configuration exacte de ton CPM Adsterra (0.079 $)
-let cpmTotalReel = 0.079; 
+let cpmTotalReel = 0.05; 
 
 // SÉCURITÉ : Tes 9 bannières réelles
 const listePubsClassiques = [
