@@ -131,7 +131,7 @@ app.get('/', (req, res) => {
 
             window.onload = function () {
                 google.accounts.id.initialize({
-                    client_id: "REMPLACE_PAR_TON_CLIENT_ID", 
+                    client_id: "487882794507-di9ivm4deeps5hlpe6k4q1vsmg2e3cm7.apps.googleusercontent.com", 
                     callback: handleCredentialResponse
                 });
                 google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "medium" });
