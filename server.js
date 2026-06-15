@@ -6,11 +6,12 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 
-// Configuration exacte de ton CPM Adsterra (0.079 $)
+// SÉCURITÉ MAXIMUM : On garde ton taux CPM bloqué à 0.05 $
 let cpmTotalReel = 0.05; 
 
-// SÉCURITÉ : Tes 9 bannières réelles
+// SÉCURITÉ : Ta liste complète contenant maintenant tes 10 codes publicitaires
 const listePubsClassiques = [
+    `<div class="cadre-pub"><iframe src="https://www.effectivecpmnetwork.com/weu4zeugu4?key=7d92fb6ddfab5d9efced716224171730" width="320" height="50" frameborder="0" scrolling="no"></iframe></div>`,
     `<div class="cadre-pub"><script async="async" data-cfasync="false" src="https://pl29755887.effectivecpmnetwork.com/0c4aec7de1dbfd24dc489c49dbbeed58/invoke.js"></script><div id="container-0c4aec7de1dbfd24dc489c49dbbeed58"></div></div>`,
     `<div class="cadre-pub"><script src="https://pl29755888.effectivecpmnetwork.com/dc/fc/00/dcfc006b10c9d5326ca60c79c48734c5.js"></script></div>`,
     `<div class="cadre-pub"><script type="text/javascript">atOptions = { 'key' : '3c4b9d3350a0a36321339e43f2b58753', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };</script><script src="https://www.highperformanceformat.com/3c4b9d3350a0a36321339e43f2b58753/invoke.js"></script></div>`,
@@ -31,7 +32,7 @@ app.get('/', (req, res) => {
     <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Slice Master - Connexion Persistante</title>
+        <title>Slice Master - 10 Publicités</title>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
         <style>
             body { font-family: sans-serif; background: #f4f6f9; padding: 20px; text-align: center; margin: 0; }
@@ -59,15 +60,14 @@ app.get('/', (req, res) => {
             </div>
         </div>
 
-        <h2>Slice Master — Mode Production</h2>
-        <p style="color: #7f8c8d;">Chaque rafraîchissement (F5) cumule l'argent. Tes bannières s'affichent toutes ci-dessous.</p>
+        <h2>Slice Master — Session active (10 Pubs)</h2>
+        <p style="color: #7f8c8d;">Tes 10 bannières se chargent ci-dessous. Rafraîchis pour accumuler tes gains.</p>
 
         <div class="zone-affichage-flex">
             ${htmlPubs}
         </div>
 
         <script>
-            // On vérifie d'abord si l'utilisateur s'était déjà connecté avant le rafraîchissement
             let currentUserId = localStorage.getItem('userId') || "Jasedi_User";
             let userPrenom = localStorage.getItem('userPrenom') || "Invité";
 
@@ -95,7 +95,6 @@ app.get('/', (req, res) => {
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('0' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
                 const profil = JSON.parse(jsonPayload);
                 
-                // On bascule sur le compte Google de manière définitive
                 currentUserId = profil.email;
                 userPrenom = profil.given_name;
                 
@@ -103,7 +102,6 @@ app.get('/', (req, res) => {
                 localStorage.setItem('userPrenom', userPrenom);
                 
                 majInterface();
-                // On calcule le gain UNIQUEMENT après validation du compte
                 calculerGainImpression();
             }
 
@@ -117,7 +115,8 @@ app.get('/', (req, res) => {
 
             function calculerGainImpression() {
                 const cpm = ${cpmTotalReel};
-                const totalPageBrut = (cpm / 1000) * 9; 
+                // Multiplié par 10 car le Direct Link est maintenant compté comme une impression active !
+                const totalPageBrut = (cpm / 1000) * 10; 
                 
                 let sUser = parseFloat(localStorage.getItem('solde_' + currentUserId)) || 0.00000;
                 let sAdmin = parseFloat(localStorage.getItem('solde_admin_' + currentUserId)) || 0.00000;
@@ -133,24 +132,17 @@ app.get('/', (req, res) => {
             }
 
             window.onload = function () {
-                // On met à jour l'interface avec ce qu'on a en mémoire au démarrage
                 majInterface();
 
                 google.accounts.id.initialize({
                     client_id: "487882794507-di9ivm4deeps5hlpe6k4q1vsmg2e3cm7.apps.googleusercontent.com", 
                     callback: handleCredentialResponse,
-                    auto_select: true // Demande à Google de reconnecter automatiquement la session sans recliquer !
+                    auto_select: true 
                 });
                 
                 google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "medium" });
                 
-                // Si l'utilisateur est un invité ou déjà validé localement, on effectue le calcul
-                if (currentUserId === "Jasedi_User") {
-                    calculerGainImpression();
-                } else {
-                    // Si on est déjà connecté à Google localement, on applique le gain directement sur son ID
-                    calculerGainImpression();
-                }
+                calculerGainImpression();
             };
         </script>
     </body>
@@ -159,5 +151,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Serveur prêt et stable.`);
+    console.log(`Serveur prêt avec 10 bannières.`);
 });
